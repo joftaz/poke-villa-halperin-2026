@@ -10,7 +10,7 @@ const STATUS_COLORS = {
   ready:     { bg: '#e8f5ee', text: '#166534', border: '#6ee7b7' },
 }
 
-export default function MyOrder({ order: initialOrder, savedId, onEdit, onNewOrder }) {
+export default function MyOrder({ order: initialOrder, savedId, onEdit, onCancel, onNewOrder }) {
   const [order, setOrder] = useState(initialOrder)
 
   // Realtime subscription — updates when kitchen changes status
@@ -77,8 +77,9 @@ export default function MyOrder({ order: initialOrder, savedId, onEdit, onNewOrd
       {status === 'received' && (
         <button className={styles.editBtn} onClick={onEdit}>✏️ ערוך הזמנה</button>
       )}
-      {status === 'ready' && (
-        <button className={styles.newOrderBtn} onClick={onNewOrder}>+ הזמנה חדשה</button>
+      <button className={styles.newOrderBtn} onClick={onNewOrder}>+ הזמנה חדשה</button>
+      {status === 'received' && (
+        <button className={styles.cancelBtn} onClick={onCancel}>ביטול הזמנה</button>
       )}
     </div>
   )

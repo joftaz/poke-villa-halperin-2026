@@ -2,7 +2,7 @@ import { useState } from 'react'
 import styles from './Steps.module.css'
 import BowlIllustration from '../components/BowlIllustration.jsx'
 
-export default function NameStep({ order, onNext }) {
+export default function NameStep({ order, onNext, onBack }) {
   const [name, setName] = useState(order.name ?? '')
 
   return (
@@ -32,6 +32,12 @@ export default function NameStep({ order, onNext }) {
         >
           המשך לבנות את הקערה →
         </button>
+
+        {onBack && (
+          <div className={styles.navRow}>
+            <button className={styles.backBtn} onClick={onBack}>← חזור להזמנות</button>
+          </div>
+        )}
       </div>
     </div>
   )

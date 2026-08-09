@@ -36,6 +36,11 @@ export async function updateOrderStatus(id, status) {
   return updateOrder(id, { status })
 }
 
+export async function deleteOrder(id) {
+  const { error } = await supabase.from('orders').delete().eq('id', id)
+  if (error) throw error
+}
+
 export async function getAllOrders() {
   const { data, error } = await supabase
     .from('orders')

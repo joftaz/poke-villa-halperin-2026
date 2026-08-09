@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { BASES, TOPPINGS, PROTEINS, SAUCES, STATUSES } from '../data/menu.js'
 import { supabase } from '../lib/supabase.js'
-import { getAllOrders, updateOrderStatus } from '../lib/orders.js'
+import { getAllOrders, updateOrderStatus, deleteOrder } from '../lib/orders.js'
 import KitchenLogin from './KitchenLogin.jsx'
 import styles from './Kitchen.module.css'
 
@@ -18,13 +18,14 @@ function timeAgo(iso) {
   return `לפני ${Math.floor(diff / 3600)} שעות`
 }
 
-function OrderCard({ order, onAdvance }) {
+function OrderCard({ order, onAdvance, onDelete }) {
   const meta = STATUS_META[order.status]
   const base = BASES.find(b => b.id === order.base)
   const protein = PROTEINS.find(p => p.id === order.protein)
   const sauce = SAUCES.find(s => s.id === order.sauce)
   const selectedToppings = TOPPINGS.filter(t => order.toppings?.includes(t.id))
   const [, setTick] = useState(0)
+  const [confirmDelete, setConfirmDelete] = useState(false)
 
   useEffect(() => {
     const t = setInterval(() => setTick(n => n + 1), 30000)
@@ -38,9 +39,12 @@ function OrderCard({ order, onAdvance }) {
           <span className={styles.customerName}>{order.name}</span>
           <span className={styles.timeAgo}>{timeAgo(order.created_at)}</span>
         </div>
-        <span className={styles.statusBadge} style={{ background: meta.bg, color: meta.color, borderColor: meta.border }}>
-          {meta.label}
-        </span>
+        <div className={styles.cardHeaderRight}>
+          <span className={styles.statusBadge} style={{ background: meta.bg, color: meta.color, borderColor: meta.border }}>
+            {meta.label}
+          </span>
+          <button className={styles.deleteBtn} onClick={() => setConfirmDelete(true)} title="מחק הזמנה">🗑</button>
+        </div>
       </div>
 
       <div className={styles.orderDetails}>
@@ -66,16 +70,28 @@ function OrderCard({ order, onAdvance }) {
         </div>
       </div>
 
-      {meta.next && (
-        <button
-          className={[styles.advanceBtn, order.status === 'preparing' ? styles.advanceBtnReady : ''].join(' ')}
-          onClick={() => onAdvance(order.id, meta.next)}
-        >
-          {meta.nextLabel}
-        </button>
-      )}
-      {order.status === 'ready' && (
-        <div className={styles.readyBanner}>✅ מוכנה לאיסוף!</div>
+      {confirmDelete ? (
+        <div className={styles.deleteConfirm}>
+          <span>למחוק את ההזמנה של {order.name}?</span>
+          <div className={styles.deleteConfirmBtns}>
+            <button className={styles.confirmYes} onClick={() => onDelete(order.id)}>כן, מחק</button>
+            <button className={styles.confirmNo} onClick={() => setConfirmDelete(false)}>ביטול</button>
+          </div>
+        </div>
+      ) : (
+        <>
+          {meta.next && (
+            <button
+              className={[styles.advanceBtn, order.status === 'preparing' ? styles.advanceBtnReady : ''].join(' ')}
+              onClick={() => onAdvance(order.id, meta.next)}
+            >
+              {meta.nextLabel}
+            </button>
+          )}
+          {order.status === 'ready' && (
+            <div className={styles.readyBanner}>✅ מוכנה לאיסוף!</div>
+          )}
+        </>
       )}
     </div>
   )
@@ -116,10 +132,18 @@ export default function Kitchen() {
   async function advance(id, nextStatus) {
     try {
       await updateOrderStatus(id, nextStatus)
-      // Optimistic update while realtime catches up
       setOrders(prev => prev.map(o => o.id === id ? { ...o, status: nextStatus } : o))
     } catch (e) {
       setError('שגיאה בעדכון סטטוס')
+    }
+  }
+
+  async function remove(id) {
+    try {
+      await deleteOrder(id)
+      setOrders(prev => prev.filter(o => o.id !== id))
+    } catch (e) {
+      setError('שגיאה במחיקת הזמנה')
     }
   }
 
@@ -170,7 +194,7 @@ export default function Kitchen() {
           <div className={styles.empty}><p>אין הזמנות כרגע</p></div>
         )}
         {displayed.map(order => (
-          <OrderCard key={order.id} order={order} onAdvance={advance} />
+          <OrderCard key={order.id} order={order} onAdvance={advance} onDelete={remove} />
         ))}
       </main>
     </div>
