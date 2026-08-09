@@ -1,8 +1,9 @@
 import styles from './Steps.module.css'
 import BowlIllustration from '../components/BowlIllustration.jsx'
-import { BASES } from '../data/menu.js'
+import { useMenu } from '../lib/MenuContext.jsx'
 
 export default function BaseStep({ order, onNext, onBack }) {
+  const { bases } = useMenu()
   return (
     <div className={styles.page}>
       <BowlIllustration order={order} />
@@ -12,7 +13,7 @@ export default function BaseStep({ order, onNext, onBack }) {
         <p className={styles.subtitle}>בחר אחד מהאפשרויות:</p>
 
         <div className={styles.optionList}>
-          {BASES.map(base => (
+          {bases.map(base => (
             <button
               key={base.id}
               className={[styles.optionBtn, order.base === base.id ? styles.selected : ''].join(' ')}

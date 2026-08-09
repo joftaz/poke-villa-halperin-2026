@@ -1,8 +1,9 @@
 import styles from './Steps.module.css'
 import BowlIllustration from '../components/BowlIllustration.jsx'
-import { PROTEINS } from '../data/menu.js'
+import { useMenu } from '../lib/MenuContext.jsx'
 
 export default function ProteinStep({ order, onNext, onBack }) {
+  const { proteins } = useMenu()
   return (
     <div className={styles.page}>
       <BowlIllustration order={order} />
@@ -12,7 +13,7 @@ export default function ProteinStep({ order, onNext, onBack }) {
         <p className={styles.subtitle}>בחר אחד מהאפשרויות:</p>
 
         <div className={styles.optionList}>
-          {PROTEINS.map(p => (
+          {proteins.map(p => (
             <button
               key={p.id}
               className={[styles.optionBtn, order.protein === p.id ? styles.selected : ''].join(' ')}

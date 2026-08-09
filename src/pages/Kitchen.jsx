@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
-import { BASES, TOPPINGS, PROTEINS, SAUCES, STATUSES } from '../data/menu.js'
+import { STATUSES } from '../data/menu.js'
+import { useMenu } from '../lib/MenuContext.jsx'
 import { supabase } from '../lib/supabase.js'
 import { getAllOrders, updateOrderStatus, deleteOrder } from '../lib/orders.js'
 import KitchenLogin from './KitchenLogin.jsx'
@@ -19,11 +20,12 @@ function timeAgo(iso) {
 }
 
 function OrderCard({ order, onAdvance, onDelete }) {
+  const { bases, toppings, proteins, sauces } = useMenu()
   const meta = STATUS_META[order.status]
-  const base = BASES.find(b => b.id === order.base)
-  const protein = PROTEINS.find(p => p.id === order.protein)
-  const sauce = SAUCES.find(s => s.id === order.sauce)
-  const selectedToppings = TOPPINGS.filter(t => order.toppings?.includes(t.id))
+  const base = bases.find(b => b.id === order.base)
+  const protein = proteins.find(p => p.id === order.protein)
+  const sauce = sauces.find(s => s.id === order.sauce)
+  const selectedToppings = toppings.filter(t => order.toppings?.includes(t.id))
   const [, setTick] = useState(0)
   const [confirmDelete, setConfirmDelete] = useState(false)
 

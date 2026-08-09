@@ -1,13 +1,14 @@
 import styles from './Steps.module.css'
 import reviewStyles from './ReviewStep.module.css'
 import BowlIllustration from '../components/BowlIllustration.jsx'
-import { BASES, TOPPINGS, PROTEINS, SAUCES } from '../data/menu.js'
+import { useMenu } from '../lib/MenuContext.jsx'
 
 export default function ReviewStep({ order, onSubmit, onBack }) {
-  const base = BASES.find(b => b.id === order.base)
-  const protein = PROTEINS.find(p => p.id === order.protein)
-  const sauce = SAUCES.find(s => s.id === order.sauce)
-  const selectedToppings = TOPPINGS.filter(t => order.toppings?.includes(t.id))
+  const { bases, toppings, proteins, sauces } = useMenu()
+  const base = bases.find(b => b.id === order.base)
+  const protein = proteins.find(p => p.id === order.protein)
+  const sauce = sauces.find(s => s.id === order.sauce)
+  const selectedToppings = toppings.filter(t => order.toppings?.includes(t.id))
 
   return (
     <div className={styles.page}>

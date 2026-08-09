@@ -1,4 +1,4 @@
-import { BASES, TOPPINGS, PROTEINS, SAUCES } from '../data/menu.js'
+import { useMenu } from '../lib/MenuContext.jsx'
 import styles from './BowlIllustration.module.css'
 
 const TOPPING_POSITIONS = [
@@ -27,10 +27,11 @@ function ToppingBlob({ topping, pos, index }) {
 }
 
 export default function BowlIllustration({ order }) {
-  const base = BASES.find(b => b.id === order.base)
-  const protein = PROTEINS.find(p => p.id === order.protein)
-  const sauce = SAUCES.find(s => s.id === order.sauce)
-  const selectedToppings = TOPPINGS.filter(t => order.toppings.includes(t.id))
+  const { bases, toppings, proteins, sauces } = useMenu()
+  const base = bases.find(b => b.id === order.base)
+  const protein = proteins.find(p => p.id === order.protein)
+  const sauce = sauces.find(s => s.id === order.sauce)
+  const selectedToppings = toppings.filter(t => order.toppings.includes(t.id))
 
   const baseColor = base?.color ?? '#f5e6c8'
   const sauceTint = sauce?.tint ?? 'rgba(0,0,0,0)'

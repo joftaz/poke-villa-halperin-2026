@@ -1,8 +1,9 @@
 import styles from './Steps.module.css'
 import BowlIllustration from '../components/BowlIllustration.jsx'
-import { TOPPINGS } from '../data/menu.js'
+import { useMenu } from '../lib/MenuContext.jsx'
 
 export default function ToppingsStep({ order, onNext, onBack }) {
+  const { toppings: TOPPINGS } = useMenu()
   const selected = order.toppings ?? []
 
   function toggle(id) {

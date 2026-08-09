@@ -1,8 +1,9 @@
 import styles from './Steps.module.css'
 import BowlIllustration from '../components/BowlIllustration.jsx'
-import { SAUCES } from '../data/menu.js'
+import { useMenu } from '../lib/MenuContext.jsx'
 
 export default function SauceStep({ order, onNext, onBack }) {
+  const { sauces } = useMenu()
   return (
     <div className={styles.page}>
       <BowlIllustration order={order} />
@@ -12,7 +13,7 @@ export default function SauceStep({ order, onNext, onBack }) {
         <p className={styles.subtitle}>בחר אחד מהאפשרויות:</p>
 
         <div className={styles.optionList}>
-          {SAUCES.map(s => (
+          {sauces.map(s => (
             <button
               key={s.id}
               className={[styles.optionBtn, order.sauce === s.id ? styles.selected : ''].join(' ')}

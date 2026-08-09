@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import styles from './MyOrder.module.css'
 import BowlIllustration from '../components/BowlIllustration.jsx'
-import { BASES, TOPPINGS, PROTEINS, SAUCES, STATUSES } from '../data/menu.js'
+import { STATUSES } from '../data/menu.js'
+import { useMenu } from '../lib/MenuContext.jsx'
 import { supabase } from '../lib/supabase.js'
 
 const STATUS_COLORS = {
@@ -30,10 +31,11 @@ export default function MyOrder({ order: initialOrder, savedId, onEdit, onCancel
     return () => supabase.removeChannel(channel)
   }, [savedId])
 
-  const base = BASES.find(b => b.id === order.base)
-  const protein = PROTEINS.find(p => p.id === order.protein)
-  const sauce = SAUCES.find(s => s.id === order.sauce)
-  const selectedToppings = TOPPINGS.filter(t => order.toppings?.includes(t.id))
+  const { bases, toppings, proteins, sauces } = useMenu()
+  const base = bases.find(b => b.id === order.base)
+  const protein = proteins.find(p => p.id === order.protein)
+  const sauce = sauces.find(s => s.id === order.sauce)
+  const selectedToppings = toppings.filter(t => order.toppings?.includes(t.id))
   const status = order.status ?? 'received'
   const colors = STATUS_COLORS[status] ?? STATUS_COLORS.received
 

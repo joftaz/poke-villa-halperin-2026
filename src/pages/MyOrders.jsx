@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { BASES, PROTEINS, SAUCES, STATUSES } from '../data/menu.js'
+import { STATUSES } from '../data/menu.js'
+import { useMenu } from '../lib/MenuContext.jsx'
 import { supabase } from '../lib/supabase.js'
 import styles from './MyOrders.module.css'
 
@@ -10,12 +11,13 @@ const STATUS_COLORS = {
 }
 
 function OrderCard({ order: initialOrder, onEdit, onCancel, onOrderUpdate }) {
+  const { bases, proteins, sauces } = useMenu()
   const [order, setOrder] = useState(initialOrder)
   const status = order.status ?? 'received'
   const colors = STATUS_COLORS[status] ?? STATUS_COLORS.received
-  const base = BASES.find(b => b.id === order.base)
-  const protein = PROTEINS.find(p => p.id === order.protein)
-  const sauce = SAUCES.find(s => s.id === order.sauce)
+  const base = bases.find(b => b.id === order.base)
+  const protein = proteins.find(p => p.id === order.protein)
+  const sauce = sauces.find(s => s.id === order.sauce)
 
   useEffect(() => {
     const channel = supabase
