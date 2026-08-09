@@ -1,0 +1,85 @@
+.bar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2px;
+  padding: 12px 8px 8px;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  overflow-x: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  direction: rtl;
+}
+
+.bar::-webkit-scrollbar {
+  display: none;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  min-width: 40px;
+  position: relative;
+}
+
+.step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 13px;
+  left: -50%;
+  width: 100%;
+  height: 2px;
+  background: var(--color-border);
+  z-index: 0;
+}
+
+.step.done:not(:last-child)::after,
+.step.active:not(:last-child)::after {
+  background: var(--color-primary);
+}
+
+.dot {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  background: var(--color-border);
+  color: var(--color-text-muted);
+  position: relative;
+  z-index: 1;
+  transition: background 0.25s, color 0.25s;
+}
+
+.step.done .dot {
+  background: var(--color-primary);
+  color: white;
+}
+
+.step.active .dot {
+  background: var(--color-primary);
+  color: white;
+  box-shadow: 0 0 0 3px var(--color-primary-light);
+}
+
+.label {
+  font-size: 10px;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.step.active .label {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.step.done .label {
+  color: var(--color-primary);
+}

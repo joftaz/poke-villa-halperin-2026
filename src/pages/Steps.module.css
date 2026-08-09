@@ -1,0 +1,199 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+  gap: 0;
+  min-height: 0;
+  flex: 1;
+}
+
+.card {
+  background: var(--color-surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 24px 20px;
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.title {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--color-text);
+  text-align: center;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+/* Name input */
+.nameInput {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 18px;
+  outline: none;
+  transition: border-color 0.2s;
+  text-align: right;
+  direction: rtl;
+}
+
+.nameInput:focus {
+  border-color: var(--color-primary);
+}
+
+/* Primary CTA button */
+.primaryBtn {
+  width: 100%;
+  padding: 16px;
+  background: var(--color-primary);
+  color: white;
+  border-radius: var(--radius-sm);
+  font-size: 17px;
+  font-weight: 700;
+  transition: background 0.2s, transform 0.1s;
+  text-align: center;
+}
+
+.primaryBtn:hover {
+  background: #236040;
+}
+
+.primaryBtn:active {
+  transform: scale(0.98);
+}
+
+.primaryBtn:disabled {
+  background: var(--color-border);
+  color: var(--color-text-muted);
+  cursor: not-allowed;
+}
+
+/* Option list (radio-style) */
+.optionList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.optionBtn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 16px;
+  font-weight: 500;
+  background: var(--color-surface);
+  color: var(--color-text);
+  transition: border-color 0.15s, background 0.15s;
+  text-align: right;
+  direction: rtl;
+  width: 100%;
+}
+
+.optionBtn:hover {
+  border-color: var(--color-primary);
+  background: var(--color-primary-light);
+}
+
+.optionBtn.selected {
+  border-color: var(--color-primary);
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.colorDot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  flex-shrink: 0;
+}
+
+.checkmark {
+  margin-right: auto;
+  color: var(--color-primary);
+  font-weight: 800;
+  font-size: 16px;
+}
+
+/* Topping chips grid */
+.toppingGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.toppingChip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 12px;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 500;
+  background: var(--color-surface);
+  color: var(--color-text);
+  transition: border-color 0.15s, background 0.15s;
+  text-align: right;
+  direction: rtl;
+  position: relative;
+}
+
+.toppingChip:hover {
+  border-color: var(--color-primary);
+  background: var(--color-primary-light);
+}
+
+.toppingChip.selected {
+  border-color: var(--color-primary);
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.chipCheck {
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  color: var(--color-primary);
+  font-weight: 800;
+}
+
+/* Nav row */
+.navRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.backBtn {
+  color: var(--color-text-muted);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 4px;
+  background: none;
+}
+
+.backBtn:hover {
+  color: var(--color-text);
+}

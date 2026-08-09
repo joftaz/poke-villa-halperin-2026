@@ -1,0 +1,56 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+}
+
+.svg {
+  width: 200px;
+  height: 200px;
+  max-width: 100%;
+  filter: drop-shadow(0 4px 16px rgba(0,0,0,0.15));
+}
+
+.baseLayer {
+  transition: fill 0.4s ease;
+}
+
+.sauceLayer {
+  transition: fill 0.4s ease;
+}
+
+.toppingBlob {
+  animation: popIn 0.35s ease both;
+  animation-delay: var(--delay, 0ms);
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+    transform-origin: center center;
+  }
+  60% {
+    transform: scale(1.15);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.proteinLayer {
+  animation: slideIn 0.3s ease both;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
