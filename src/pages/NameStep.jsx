@@ -10,7 +10,7 @@ export default function NameStep({ order, onNext, onBack }) {
       <BowlIllustration order={order} />
 
       <div className={styles.card}>
-        <h1 className={styles.title}>ברוכים הבאים לפוקה וילה! 🌊</h1>
+        <h1 className={styles.title}>ברוכים הבאים לפוקה וילה</h1>
         <p className={styles.subtitle}>מה שמך?</p>
 
         <input

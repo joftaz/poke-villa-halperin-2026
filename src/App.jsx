@@ -13,7 +13,7 @@ import { supabase } from './lib/supabase.js'
 import { createOrder, getOrder, updateOrder, deleteOrder } from './lib/orders.js'
 import styles from './App.module.css'
 
-const EMPTY_ORDER = { name: '', base: null, toppings: [], protein: null, sauce: null }
+const EMPTY_ORDER = { name: '', base: null, toppings: [], proteins: [], sauces: [] }
 const STEP_NAME = 0, STEP_BASE = 1, STEP_TOPPINGS = 2, STEP_PROTEIN = 3, STEP_SAUCE = 4, STEP_REVIEW = 5
 
 const IDS_KEY = 'poke_order_ids'
@@ -83,8 +83,8 @@ function OrderFlow() {
           name: order.name,
           base: order.base,
           toppings: order.toppings,
-          protein: order.protein,
-          sauce: order.sauce,
+          protein: order.proteins,
+          sauce: order.sauces,
         })
         setMyOrders(prev => {
           const next = prev.map(o => o.id === editingId ? saved : o)
@@ -96,8 +96,8 @@ function OrderFlow() {
           name: order.name,
           base: order.base,
           toppings: order.toppings,
-          protein: order.protein,
-          sauce: order.sauce,
+          protein: order.proteins,
+          sauce: order.sauces,
         })
         setMyOrders(prev => {
           const next = [...prev, saved]
@@ -116,7 +116,13 @@ function OrderFlow() {
   }
 
   function startEdit(o) {
-    setOrder({ name: o.name, base: o.base, toppings: o.toppings, protein: o.protein, sauce: o.sauce })
+    setOrder({
+      name: o.name,
+      base: o.base,
+      toppings: o.toppings ?? [],
+      proteins: Array.isArray(o.protein) ? o.protein : (o.protein ? [o.protein] : []),
+      sauces:   Array.isArray(o.sauce)   ? o.sauce   : (o.sauce   ? [o.sauce]   : []),
+    })
     setEditingId(o.id)
     setStep(STEP_NAME)
     setAppState('ordering')
@@ -157,7 +163,7 @@ function OrderFlow() {
   if (appState === 'loading') {
     return (
       <div className={styles.app}>
-        <div className={styles.topBar}><span className={styles.logo}>🌊 פוקה וילה</span></div>
+        <div className={styles.topBar}><span className={styles.logo}>פוקה וילה</span></div>
         <div className={styles.loading}>טוען...</div>
       </div>
     )
@@ -166,7 +172,7 @@ function OrderFlow() {
   if (appState === 'auth_error') {
     return (
       <div className={styles.app}>
-        <div className={styles.topBar}><span className={styles.logo}>🌊 פוקה וילה</span></div>
+        <div className={styles.topBar}><span className={styles.logo}>פוקה וילה</span></div>
         <div className={styles.authError}>
           <p>לא ניתן להתחבר לשרת.</p>
           <p className={styles.authErrorHint}>אנא וודא שההרשמה האנונימית מופעלת ב-Supabase (Authentication → Providers → Anonymous).</p>
@@ -179,7 +185,7 @@ function OrderFlow() {
   if (appState === 'my_orders') {
     return (
       <div className={styles.app}>
-        <div className={styles.topBar}><span className={styles.logo}>🌊 פוקה וילה</span></div>
+        <div className={styles.topBar}><span className={styles.logo}>פוקה וילה</span></div>
         <MyOrders
           orders={myOrders}
           onEdit={startEdit}
@@ -193,14 +199,14 @@ function OrderFlow() {
 
   return (
     <div className={styles.app}>
-      <div className={styles.topBar}><span className={styles.logo}>🌊 פוקה וילה</span></div>
+      <div className={styles.topBar}><span className={styles.logo}>פוקה וילה</span></div>
       <StepBar currentStep={step} />
       <div className={styles.content}>
         {step === STEP_NAME     && <NameStep     order={order} onNext={p => update(p)} onBack={myOrders.length > 0 ? backToList : null} />}
         {step === STEP_BASE     && <BaseStep     order={order} onNext={p => update(p)}              onBack={() => setStep(s => s - 1)} />}
         {step === STEP_TOPPINGS && <ToppingsStep order={order} onNext={(p, adv) => update(p, adv)} onBack={() => setStep(s => s - 1)} />}
-        {step === STEP_PROTEIN  && <ProteinStep  order={order} onNext={p => update(p)}              onBack={() => setStep(s => s - 1)} />}
-        {step === STEP_SAUCE    && <SauceStep    order={order} onNext={p => update(p)}              onBack={() => setStep(s => s - 1)} />}
+        {step === STEP_PROTEIN  && <ProteinStep  order={order} onNext={(p, adv) => update(p, adv)} onBack={() => setStep(s => s - 1)} />}
+        {step === STEP_SAUCE    && <SauceStep    order={order} onNext={(p, adv) => update(p, adv)} onBack={() => setStep(s => s - 1)} />}
         {step === STEP_REVIEW   && <ReviewStep   order={order} onSubmit={submit}                    onBack={() => setStep(s => s - 1)} />}
       </div>
     </div>

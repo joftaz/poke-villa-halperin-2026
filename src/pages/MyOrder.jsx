@@ -33,8 +33,10 @@ export default function MyOrder({ order: initialOrder, savedId, onEdit, onCancel
 
   const { bases, toppings, proteins, sauces } = useMenu()
   const base = bases.find(b => b.id === order.base)
-  const protein = proteins.find(p => p.id === order.protein)
-  const sauce = sauces.find(s => s.id === order.sauce)
+  const proteinIds = Array.isArray(order.protein) ? order.protein : (order.protein ? [order.protein] : [])
+  const sauceIds   = Array.isArray(order.sauce)   ? order.sauce   : (order.sauce   ? [order.sauce]   : [])
+  const selectedProteins = proteins.filter(p => proteinIds.includes(p.id))
+  const selectedSauces   = sauces.filter(s => sauceIds.includes(s.id))
   const selectedToppings = toppings.filter(t => order.toppings?.includes(t.id))
   const status = order.status ?? 'received'
   const colors = STATUS_COLORS[status] ?? STATUS_COLORS.received
@@ -68,11 +70,15 @@ export default function MyOrder({ order: initialOrder, savedId, onEdit, onCancel
         </div>
         <div className={styles.row}>
           <span className={styles.label}>חלבון</span>
-          <span className={styles.value}>{protein?.label ?? '—'}</span>
+          <span className={styles.value}>
+            {selectedProteins.length > 0 ? selectedProteins.map(p => p.label).join(', ') : 'ללא חלבון'}
+          </span>
         </div>
         <div className={styles.row}>
           <span className={styles.label}>רוטב</span>
-          <span className={styles.value}>{sauce?.label ?? '—'}</span>
+          <span className={styles.value}>
+            {selectedSauces.length > 0 ? selectedSauces.map(s => s.label).join(', ') : 'ללא רוטב'}
+          </span>
         </div>
       </div>
 

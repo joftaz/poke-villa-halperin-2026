@@ -6,8 +6,8 @@ import { useMenu } from '../lib/MenuContext.jsx'
 export default function ReviewStep({ order, onSubmit, onBack }) {
   const { bases, toppings, proteins, sauces } = useMenu()
   const base = bases.find(b => b.id === order.base)
-  const protein = proteins.find(p => p.id === order.protein)
-  const sauce = sauces.find(s => s.id === order.sauce)
+  const selectedProteins = proteins.filter(p => (order.proteins ?? []).includes(p.id))
+  const selectedSauces = sauces.filter(s => (order.sauces ?? []).includes(s.id))
   const selectedToppings = toppings.filter(t => order.toppings?.includes(t.id))
 
   return (
@@ -33,11 +33,15 @@ export default function ReviewStep({ order, onSubmit, onBack }) {
           </div>
           <div className={reviewStyles.row}>
             <span className={reviewStyles.rowLabel}>חלבון</span>
-            <span className={reviewStyles.rowValue}>{protein?.label ?? '—'}</span>
+            <span className={reviewStyles.rowValue}>
+              {selectedProteins.length > 0 ? selectedProteins.map(p => p.label).join(', ') : 'ללא חלבון'}
+            </span>
           </div>
           <div className={reviewStyles.row}>
             <span className={reviewStyles.rowLabel}>רוטב</span>
-            <span className={reviewStyles.rowValue}>{sauce?.label ?? '—'}</span>
+            <span className={reviewStyles.rowValue}>
+              {selectedSauces.length > 0 ? selectedSauces.map(s => s.label).join(', ') : 'ללא רוטב'}
+            </span>
           </div>
         </div>
 

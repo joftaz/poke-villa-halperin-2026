@@ -14,7 +14,7 @@ export default function StepBar({ currentStep }) {
             i === currentStep ? styles.active : '',
           ].join(' ')}
         >
-          <div className={styles.dot}>{i < currentStep ? '✓' : i + 1}</div>
+          <div className={styles.dot} />
           <span className={styles.label}>{label}</span>
         </div>
       ))}

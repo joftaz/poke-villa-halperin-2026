@@ -23,8 +23,10 @@ function OrderCard({ order, onAdvance, onDelete }) {
   const { bases, toppings, proteins, sauces } = useMenu()
   const meta = STATUS_META[order.status]
   const base = bases.find(b => b.id === order.base)
-  const protein = proteins.find(p => p.id === order.protein)
-  const sauce = sauces.find(s => s.id === order.sauce)
+  const proteinIds = Array.isArray(order.protein) ? order.protein : (order.protein ? [order.protein] : [])
+  const sauceIds   = Array.isArray(order.sauce)   ? order.sauce   : (order.sauce   ? [order.sauce]   : [])
+  const selectedProteins = proteins.filter(p => proteinIds.includes(p.id))
+  const selectedSauces   = sauces.filter(s => sauceIds.includes(s.id))
   const selectedToppings = toppings.filter(t => order.toppings?.includes(t.id))
   const [, setTick] = useState(0)
   const [confirmDelete, setConfirmDelete] = useState(false)
@@ -64,11 +66,15 @@ function OrderCard({ order, onAdvance, onDelete }) {
         </div>
         <div className={styles.detailRow}>
           <span className={styles.detailLabel}>חלבון</span>
-          <span className={styles.detailValue}>{protein?.label ?? '—'}</span>
+          <span className={styles.detailValue}>
+            {selectedProteins.length > 0 ? selectedProteins.map(p => p.label).join('  ·  ') : <span className={styles.none}>ללא</span>}
+          </span>
         </div>
         <div className={styles.detailRow}>
           <span className={styles.detailLabel}>רוטב</span>
-          <span className={styles.detailValue}>{sauce?.label ?? '—'}</span>
+          <span className={styles.detailValue}>
+            {selectedSauces.length > 0 ? selectedSauces.map(s => s.label).join('  ·  ') : <span className={styles.none}>ללא</span>}
+          </span>
         </div>
       </div>
 

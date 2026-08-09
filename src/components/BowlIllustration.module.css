@@ -6,10 +6,10 @@
 }
 
 .svg {
-  width: 200px;
-  height: 200px;
+  width: 180px;
+  height: 180px;
   max-width: 100%;
-  filter: drop-shadow(0 4px 16px rgba(0,0,0,0.15));
+  filter: drop-shadow(0 6px 24px rgba(196,168,130,0.1));
 }
 
 .baseLayer {

@@ -29,13 +29,13 @@ function ToppingBlob({ topping, pos, index }) {
 export default function BowlIllustration({ order }) {
   const { bases, toppings, proteins, sauces } = useMenu()
   const base = bases.find(b => b.id === order.base)
-  const protein = proteins.find(p => p.id === order.protein)
-  const sauce = sauces.find(s => s.id === order.sauce)
-  const selectedToppings = toppings.filter(t => order.toppings.includes(t.id))
+  const selectedProteins = proteins.filter(p => (order.proteins ?? []).includes(p.id)).filter(p => p.id !== 'none')
+  const selectedSauces = sauces.filter(s => (order.sauces ?? []).includes(s.id))
+  const selectedToppings = toppings.filter(t => (order.toppings ?? []).includes(t.id))
 
   const baseColor = base?.color ?? '#f5e6c8'
-  const sauceTint = sauce?.tint ?? 'rgba(0,0,0,0)'
-  const proteinColor = protein?.color ?? 'transparent'
+  const sauceTint = selectedSauces[0]?.tint ?? 'rgba(0,0,0,0)'
+  const proteinColor = selectedProteins[0]?.color ?? 'transparent'
 
   return (
     <div className={styles.wrapper}>
@@ -56,7 +56,7 @@ export default function BowlIllustration({ order }) {
         <ellipse cx="50" cy="50" rx="34" ry="36" fill={baseColor} className={styles.baseLayer} />
 
         {/* Sauce tint overlay */}
-        {sauce && (
+        {selectedSauces.length > 0 && (
           <ellipse
             cx="50" cy="50" rx="34" ry="36"
             fill={sauceTint}
@@ -75,7 +75,7 @@ export default function BowlIllustration({ order }) {
         ))}
 
         {/* Protein strip */}
-        {protein && protein.id !== 'none' && (
+        {selectedProteins.length > 0 && (
           <g className={styles.proteinLayer}>
             <rect
               x="28" y="44" width="44" height="12" rx="6"

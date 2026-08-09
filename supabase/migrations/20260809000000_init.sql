@@ -9,8 +9,8 @@ CREATE TABLE IF NOT EXISTS public.orders (
   name        TEXT        NOT NULL,
   base        TEXT        NOT NULL,
   toppings    TEXT[]      DEFAULT '{}' NOT NULL,
-  protein     TEXT        NOT NULL,
-  sauce       TEXT        NOT NULL,
+  protein     TEXT[]      DEFAULT '{}' NOT NULL,
+  sauce       TEXT[]      DEFAULT '{}' NOT NULL,
   status      TEXT        DEFAULT 'received' NOT NULL
                           CHECK (status IN ('received', 'preparing', 'ready')),
   created_at  TIMESTAMPTZ DEFAULT now() NOT NULL,

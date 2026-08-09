@@ -1,132 +1,145 @@
 .page {
   min-height: 100dvh;
-  background: #f0f2f5;
+  background: var(--color-bg);
   direction: rtl;
 }
 
 .header {
-  background: #1a1a2e;
-  color: white;
-  padding: 20px 24px 16px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  padding: 18px 24px 14px;
   position: sticky;
   top: 0;
   z-index: 10;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+  border-bottom: 1px solid var(--color-border-mid);
 }
 
 .headerTop {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .title {
-  font-size: 22px;
-  font-weight: 800;
+  font-family: 'Frank Ruhl Libre', serif;
+  font-size: 19px;
+  font-weight: 300;
+  color: var(--color-text);
+  letter-spacing: 0.05em;
 }
 
 .signOutBtn {
-  font-size: 13px;
-  color: rgba(255,255,255,0.6);
-  background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 8px;
+  font-size: 11px;
+  color: var(--color-text-muted);
+  background: transparent;
+  border: 1px solid var(--color-border-mid);
+  border-radius: var(--radius-sm);
   padding: 6px 14px;
-  font-weight: 600;
-  transition: background 0.15s;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: border-color 0.15s, color 0.15s;
 }
 
 .signOutBtn:hover {
-  background: rgba(255,255,255,0.2);
-  color: white;
+  border-color: var(--color-primary);
+  color: var(--color-primary);
 }
 
 .errorMsg {
   grid-column: 1 / -1;
-  background: #fee2e2;
-  color: #dc2626;
+  background: rgba(196,97,74,0.08);
+  border: 1px solid rgba(196,97,74,0.3);
+  color: #c4614a;
   padding: 12px 16px;
-  border-radius: 8px;
-  font-weight: 600;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 300;
 }
 
 .counts {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
 .countBadge {
-  padding: 5px 14px;
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: 700;
+  padding: 3px 12px;
+  border-radius: 1px;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1px solid;
 }
 
 .filterRow {
   display: flex;
-  gap: 8px;
+  gap: 6px;
 }
 
 .filterBtn {
-  padding: 7px 18px;
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: 600;
-  background: rgba(255,255,255,0.1);
-  color: rgba(255,255,255,0.7);
-  border: 1.5px solid rgba(255,255,255,0.15);
-  transition: background 0.15s, color 0.15s;
+  padding: 6px 16px;
+  border-radius: 1px;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: transparent;
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
 }
 
 .filterBtn:hover {
-  background: rgba(255,255,255,0.2);
-  color: white;
+  color: var(--color-text);
+  border-color: var(--color-border-mid);
 }
 
 .filterBtn.filterActive {
-  background: white;
-  color: #1a1a2e;
-  border-color: white;
+  background: var(--color-primary);
+  color: var(--color-bg);
+  border-color: var(--color-primary);
 }
 
 /* Grid */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 20px;
-  padding: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 14px;
+  padding: 18px;
 }
 
 .empty {
   grid-column: 1 / -1;
   text-align: center;
   padding: 80px 24px;
-  color: #999;
-  font-size: 18px;
+  color: var(--color-text-muted);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 /* Order card */
 .card {
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  background: var(--color-surface);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  border: 2px solid transparent;
   transition: border-color 0.2s;
 }
 
-.card.received { border-color: #f5c842; }
-.card.preparing { border-color: #93c5fd; }
-.card.ready { border-color: #6ee7b7; }
+.card.received  { border-color: rgba(245,200,66,0.35); }
+.card.preparing { border-color: rgba(147,197,253,0.35); }
+.card.ready     { border-color: rgba(110,231,183,0.35); }
 
 .cardHeader {
-  padding: 16px 18px 12px;
-  border-bottom: 1px solid #f0f0f0;
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid var(--color-border);
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -141,15 +154,16 @@
 }
 
 .deleteBtn {
-  font-size: 15px;
-  opacity: 0.4;
+  font-size: 14px;
+  opacity: 0.2;
   background: none;
   padding: 2px 4px;
+  color: var(--color-text);
   transition: opacity 0.15s;
 }
 
 .deleteBtn:hover {
-  opacity: 0.9;
+  opacity: 0.75;
 }
 
 .nameRow {
@@ -159,28 +173,32 @@
 }
 
 .customerName {
-  font-size: 20px;
-  font-weight: 800;
-  color: #1a1a1a;
+  font-family: 'Frank Ruhl Libre', serif;
+  font-size: 17px;
+  font-weight: 300;
+  color: var(--color-text);
 }
 
 .timeAgo {
-  font-size: 12px;
-  color: #999;
+  font-size: 11px;
+  color: var(--color-text-muted);
+  letter-spacing: 0.04em;
 }
 
 .statusBadge {
-  padding: 5px 12px;
-  border-radius: 12px;
-  font-size: 13px;
-  font-weight: 700;
-  border: 1.5px solid;
+  padding: 3px 10px;
+  border-radius: 1px;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border: 1px solid;
   white-space: nowrap;
 }
 
 /* Detail rows */
 .orderDetails {
-  padding: 14px 18px;
+  padding: 12px 16px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -194,73 +212,84 @@
 }
 
 .detailLabel {
-  font-size: 12px;
-  font-weight: 700;
-  color: #999;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
+  color: var(--color-text-muted);
   white-space: nowrap;
-  min-width: 46px;
-  padding-top: 1px;
+  min-width: 40px;
+  padding-top: 2px;
 }
 
 .detailValue {
-  font-size: 15px;
-  color: #1a1a1a;
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--color-text);
   line-height: 1.5;
 }
 
 .none {
-  color: #bbb;
+  color: var(--color-text-dim);
   font-style: italic;
 }
 
 /* Action buttons */
 .advanceBtn {
-  margin: 4px 16px 16px;
-  padding: 12px;
-  background: #1a56db;
-  color: white;
-  border-radius: 10px;
-  font-size: 15px;
-  font-weight: 700;
-  transition: background 0.15s, transform 0.1s;
+  margin: 4px 14px 14px;
+  padding: 11px;
+  background: var(--color-primary);
+  color: var(--color-bg);
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: opacity 0.15s, transform 0.1s;
   text-align: center;
 }
 
-.advanceBtn:hover { background: #1344b0; }
+.advanceBtn:hover  { opacity: 0.85; }
 .advanceBtn:active { transform: scale(0.97); }
 
 .advanceBtn.advanceBtnReady {
-  background: #16a34a;
+  background: rgba(110,231,183,0.1);
+  color: #6ee7b7;
+  border: 1px solid rgba(110,231,183,0.3);
 }
 
 .advanceBtn.advanceBtnReady:hover {
-  background: #15803d;
+  background: rgba(110,231,183,0.18);
 }
 
 .readyBanner {
-  margin: 4px 16px 16px;
-  padding: 12px;
-  background: #e8f5ee;
-  color: #166534;
-  border-radius: 10px;
-  font-size: 15px;
-  font-weight: 700;
+  margin: 4px 14px 14px;
+  padding: 11px;
+  background: rgba(196,168,130,0.06);
+  border: 1px solid rgba(196,168,130,0.2);
+  color: var(--color-primary);
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   text-align: center;
 }
 
 .deleteConfirm {
-  margin: 4px 16px 16px;
+  margin: 4px 14px 14px;
   padding: 14px;
-  background: #fee2e2;
-  border-radius: 10px;
+  background: rgba(196,97,74,0.07);
+  border: 1px solid rgba(196,97,74,0.22);
+  border-radius: var(--radius-sm);
   display: flex;
   flex-direction: column;
   gap: 10px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #991b1b;
+  font-size: 13px;
+  font-weight: 400;
+  color: #c4614a;
   text-align: center;
+  letter-spacing: 0.05em;
 }
 
 .deleteConfirmBtns {
@@ -270,26 +299,33 @@
 }
 
 .confirmYes {
-  padding: 8px 20px;
-  background: #dc2626;
+  padding: 7px 18px;
+  background: #c4614a;
   color: white;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 700;
-  transition: background 0.15s;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: opacity 0.15s;
 }
 
-.confirmYes:hover { background: #b91c1c; }
+.confirmYes:hover { opacity: 0.85; }
 
 .confirmNo {
-  padding: 8px 20px;
-  background: white;
-  color: #444;
-  border: 1.5px solid #ddd;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  transition: background 0.15s;
+  padding: 7px 18px;
+  background: transparent;
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border-mid);
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: border-color 0.15s, color 0.15s;
 }
 
-.confirmNo:hover { background: #f5f5f5; }
+.confirmNo:hover {
+  border-color: var(--color-border-mid);
+  color: var(--color-text);
+}
