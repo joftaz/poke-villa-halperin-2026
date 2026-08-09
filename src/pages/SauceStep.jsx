@@ -35,10 +35,10 @@ export default function SauceStep({ order, onNext, onBack }) {
       </div>
 
       <div className={styles.navRow}>
-        <button className={styles.backBtn} onClick={onBack}>← חזור</button>
         <button className={styles.continueBtn} onClick={advance}>
-          {selected.length === 0 ? 'דלג →' : `המשך (${selected.length}) →`}
+          {selected.length === 0 ? '← דלג' : `← המשך (${selected.length})`}
         </button>
+        <button className={styles.backBtn} onClick={onBack}>חזור →</button>
       </div>
     </div>
   )

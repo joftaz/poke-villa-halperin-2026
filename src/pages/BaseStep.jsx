@@ -22,8 +22,8 @@ export default function BaseStep({ order, onNext, onBack }) {
       </div>
 
       <div className={styles.navRow}>
-        <button className={styles.backBtn} onClick={onBack}>← חזור</button>
         <span />
+        <button className={styles.backBtn} onClick={onBack}>חזור →</button>
       </div>
     </div>
   )

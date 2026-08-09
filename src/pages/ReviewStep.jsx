@@ -44,8 +44,8 @@ export default function ReviewStep({ order, onSubmit, onBack }) {
       </div>
 
       <div className={styles.navRow}>
-        <button className={styles.backBtn} onClick={onBack}>← חזור לשנות</button>
-        <button className={styles.continueBtn} onClick={onSubmit}>שלח הזמנה →</button>
+        <button className={styles.continueBtn} onClick={onSubmit}>← שלח הזמנה</button>
+        <button className={styles.backBtn} onClick={onBack}>חזור לשנות →</button>
       </div>
     </div>
   )

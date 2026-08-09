@@ -22,16 +22,16 @@ export default function NameStep({ order, onNext, onBack }) {
       />
 
       <div className={styles.navRow}>
-        {onBack
-          ? <button className={styles.backBtn} onClick={onBack}>← חזור</button>
-          : <span />}
         <button
           className={styles.continueBtn}
           disabled={!name.trim()}
           onClick={() => onNext({ name: name.trim() })}
         >
-          המשך →
+          ← המשך
         </button>
+        {onBack
+          ? <button className={styles.backBtn} onClick={onBack}>חזור →</button>
+          : <span />}
       </div>
     </div>
   )
