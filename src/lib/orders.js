@@ -1,10 +1,11 @@
 import { supabase } from './supabase.js'
 
 export async function createOrder(data) {
-  const { data: { user } } = await supabase.auth.getUser()
+  const { data: { session } } = await supabase.auth.getSession()
+  if (!session) throw new Error('No active session')
   const { data: order, error } = await supabase
     .from('orders')
-    .insert({ ...data, user_id: user.id })
+    .insert({ ...data, user_id: session.user.id })
     .select()
     .single()
   if (error) throw error
