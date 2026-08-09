@@ -11,18 +11,15 @@ const TOPPING_POSITIONS = [
 function ToppingBlob({ topping, pos, index }) {
   const size = 9 + (index % 3) * 2
   return (
-    <g className={styles.toppingBlob} style={{ '--delay': `${index * 60}ms` }}>
-      <circle cx={pos.cx} cy={pos.cy} r={size} fill={topping.color} opacity="0.88" />
-      <text
-        x={pos.cx}
-        y={pos.cy + 4}
-        textAnchor="middle"
-        fontSize="10"
-        style={{ userSelect: 'none' }}
-      >
-        {topping.emoji}
-      </text>
-    </g>
+    <circle
+      className={styles.toppingBlob}
+      style={{ '--delay': `${index * 60}ms` }}
+      cx={pos.cx}
+      cy={pos.cy}
+      r={size}
+      fill={topping.color}
+      opacity="0.88"
+    />
   )
 }
 
@@ -45,17 +42,11 @@ export default function BowlIllustration({ order }) {
         className={styles.svg}
         aria-label="איור קערת פוקה"
       >
-        {/* Bowl shadow */}
         <ellipse cx="50" cy="94" rx="38" ry="6" fill="rgba(0,0,0,0.10)" />
-
-        {/* Bowl body */}
         <ellipse cx="50" cy="52" rx="42" ry="44" fill="#e8ddd0" />
         <ellipse cx="50" cy="50" rx="39" ry="41" fill="#f2ece4" />
-
-        {/* Base fill */}
         <ellipse cx="50" cy="50" rx="34" ry="36" fill={baseColor} className={styles.baseLayer} />
 
-        {/* Sauce tint overlay */}
         {selectedSauces.length > 0 && (
           <ellipse
             cx="50" cy="50" rx="34" ry="36"
@@ -64,7 +55,6 @@ export default function BowlIllustration({ order }) {
           />
         )}
 
-        {/* Toppings */}
         {selectedToppings.map((topping, i) => (
           <ToppingBlob
             key={topping.id}
@@ -74,31 +64,17 @@ export default function BowlIllustration({ order }) {
           />
         ))}
 
-        {/* Protein strip */}
         {selectedProteins.length > 0 && (
           <g className={styles.proteinLayer}>
-            <rect
-              x="28" y="44" width="44" height="12" rx="6"
-              fill={proteinColor}
-              opacity="0.95"
-            />
-            <rect
-              x="32" y="47" width="36" height="6" rx="3"
-              fill="rgba(255,255,255,0.25)"
-            />
+            <rect x="28" y="44" width="44" height="12" rx="6" fill={proteinColor} opacity="0.95" />
+            <rect x="32" y="47" width="36" height="6" rx="3" fill="rgba(255,255,255,0.25)" />
           </g>
         )}
 
-        {/* Bowl rim highlight */}
         <ellipse cx="50" cy="50" rx="39" ry="41" fill="none" stroke="rgba(255,255,255,0.6)" strokeWidth="2" />
 
-        {/* Empty bowl prompt */}
         {!order.base && !selectedToppings.length && (
-          <text
-            x="50" y="54" textAnchor="middle"
-            fontSize="9" fill="#aaa"
-            style={{ userSelect: 'none' }}
-          >
+          <text x="50" y="54" textAnchor="middle" fontSize="9" fill="#aaa" style={{ userSelect: 'none' }}>
             בניית הקערה...
           </text>
         )}

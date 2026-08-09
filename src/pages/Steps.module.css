@@ -1,207 +1,202 @@
-.page {
+@keyframes stepIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Full-screen step container — fills the flex parent */
+.screen {
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 28px 0 0;
-  gap: 0;
-  min-height: 0;
-  flex: 1;
-}
-
-.card {
+  justify-content: center;
+  padding: 80px 32px 100px;
   width: 100%;
-  max-width: 480px;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  padding: 0 24px;
+  min-height: 0;
+  overflow-y: auto;
+  animation: stepIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-.title {
+/* ── Typography ───────────────────────────── */
+
+.question {
   font-family: 'Frank Ruhl Libre', serif;
-  font-size: 24px;
+  font-size: clamp(30px, 6vw, 48px);
   font-weight: 300;
   color: var(--color-text);
   text-align: center;
-  margin-bottom: 6px;
-  letter-spacing: 0.02em;
+  margin-bottom: 10px;
+  line-height: 1.2;
+  direction: rtl;
 }
 
-.subtitle {
-  font-size: 11px;
+.hint {
+  font-size: 13px;
   color: var(--color-text-muted);
   text-align: center;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  margin-bottom: 28px;
-  font-weight: 400;
+  letter-spacing: 0.1em;
+  margin-bottom: 52px;
+  direction: rtl;
 }
 
-/* Name input */
-.nameInput {
+/* ── Name input ───────────────────────────── */
+
+.nameField {
   width: 100%;
-  padding: 14px 0;
+  max-width: 380px;
+  padding: 16px 0;
   border: none;
   border-bottom: 1px solid var(--color-border-mid);
   background: transparent;
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 300;
   color: var(--color-text);
   outline: none;
   transition: border-color 0.2s;
-  text-align: right;
+  text-align: center;
   direction: rtl;
-  margin-bottom: 28px;
+  margin-bottom: 44px;
 }
 
-.nameInput::placeholder {
+.nameField::placeholder {
   color: var(--color-text-dim);
 }
 
-.nameInput:focus {
+.nameField:focus {
   border-color: var(--color-primary);
 }
 
-/* Primary CTA button */
-.primaryBtn {
+/* ── Options list ─────────────────────────── */
+
+.options {
   width: 100%;
-  padding: 15px;
-  background: var(--color-primary);
-  color: var(--color-bg);
-  border-radius: var(--radius-sm);
-  font-size: 12px;
-  font-weight: 400;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  transition: opacity 0.2s;
-  text-align: center;
-  margin-top: 24px;
-}
-
-.primaryBtn:hover {
-  opacity: 0.85;
-}
-
-.primaryBtn:disabled {
-  opacity: 0.2;
-  cursor: not-allowed;
-}
-
-/* Option list — menu rows */
-.optionList {
+  max-width: 400px;
   display: flex;
   flex-direction: column;
   border-top: 1px solid var(--color-border);
+  margin-bottom: 40px;
 }
 
-.optionBtn {
+.option {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 15px 0;
+  justify-content: space-between;
+  padding: 20px 0;
   border-bottom: 1px solid var(--color-border);
-  font-size: 15px;
+  font-size: 19px;
   font-weight: 300;
-  background: transparent;
   color: var(--color-text-muted);
-  transition: color 0.15s;
-  text-align: right;
+  background: transparent;
+  transition: color 0.18s;
+  cursor: pointer;
   direction: rtl;
   width: 100%;
-}
-
-.optionBtn:hover {
-  color: var(--color-text);
-}
-
-.optionBtn.selected {
-  color: var(--color-primary);
-  font-weight: 400;
-}
-
-.colorDot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  flex-shrink: 0;
-  opacity: 0.75;
-}
-
-.checkmark {
-  margin-right: auto;
-  color: var(--color-primary);
-  font-size: 11px;
-  opacity: 0.8;
-}
-
-/* Topping chips — grid with hairline dividers */
-.toppingGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1px;
-  background: var(--color-border);
-  border: 1px solid var(--color-border);
-  margin-bottom: 4px;
-}
-
-.toppingChip {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 14px 12px;
-  font-size: 13px;
-  font-weight: 300;
-  background: var(--color-bg);
-  color: var(--color-text-muted);
-  transition: color 0.15s, background 0.15s;
+  gap: 16px;
   text-align: right;
-  direction: rtl;
-  position: relative;
 }
 
-.toppingChip:hover {
+.option:hover {
   color: var(--color-text);
-  background: var(--color-surface);
 }
 
-.toppingChip.selected {
-  background: var(--color-surface);
+.option.selected {
   color: var(--color-primary);
 }
 
-.chipCheck {
-  position: absolute;
-  left: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 10px;
+/* Selection indicator — always in DOM, invisible until selected */
+.indicator {
+  font-size: 11px;
   color: var(--color-primary);
+  flex-shrink: 0;
   opacity: 0;
   transition: opacity 0.15s;
+  letter-spacing: 0;
 }
 
-.toppingChip.selected .chipCheck {
-  opacity: 0.8;
+.option.selected .indicator {
+  opacity: 1;
 }
 
-/* Nav row */
+/* ── Navigation row ───────────────────────── */
+
 .navRow {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
-  margin-top: 20px;
+  width: 100%;
+  max-width: 400px;
+  direction: ltr;
 }
 
 .backBtn {
-  color: var(--color-text-muted);
   font-size: 12px;
   font-weight: 300;
-  padding: 8px 0;
-  background: none;
   letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+  background: none;
+  padding: 8px 0;
+  transition: color 0.15s;
 }
 
 .backBtn:hover {
   color: var(--color-text);
+}
+
+.continueBtn {
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  background: none;
+  padding: 8px 0;
+  transition: opacity 0.15s;
+  direction: ltr;
+}
+
+.continueBtn:hover {
+  opacity: 0.75;
+}
+
+.continueBtn:disabled {
+  opacity: 0.2;
+  cursor: not-allowed;
+}
+
+/* ── Review summary ───────────────────────── */
+
+.summaryGrid {
+  width: 100%;
+  max-width: 400px;
+  border-top: 1px solid var(--color-border);
+  margin-bottom: 40px;
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--color-border);
+  gap: 16px;
+  direction: rtl;
+}
+
+.summaryLabel {
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--color-text-muted);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
+  padding-top: 2px;
+}
+
+.summaryValue {
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--color-text);
+  text-align: right;
+  line-height: 1.6;
 }

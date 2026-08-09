@@ -5,18 +5,18 @@ export const BASES = [
 ]
 
 export const TOPPINGS = [
-  { id: 'nori', label: 'אצות נורי', color: '#2d4a2d', emoji: '🌿' },
-  { id: 'wakame', label: 'אצות וואקמה', color: '#4a7c4a', emoji: '🍃' },
-  { id: 'avocado', label: 'אבוקדו', color: '#5a8a3c', emoji: '🥑' },
-  { id: 'sweet_potato', label: 'בטטה', color: '#e07b39', emoji: '🍠' },
-  { id: 'carrot', label: 'גזר', color: '#e8651a', emoji: '🥕' },
-  { id: 'alfalfa', label: 'נבטי אלפלפא', color: '#a0c878', emoji: '🌱' },
-  { id: 'edamame', label: 'אדממה', color: '#6ab04c', emoji: '🫘' },
-  { id: 'green_onion', label: 'בצל ירוק', color: '#5d9e4a', emoji: '🧅' },
-  { id: 'peanuts', label: 'בוטנים קלויים', color: '#c4972a', emoji: '🥜' },
-  { id: 'beet', label: 'סלק מבושל', color: '#9b2265', emoji: '🫧' },
-  { id: 'ginger', label: 'ג׳ינג׳ר כבוש', color: '#f7c5a0', emoji: '🫚' },
-  { id: 'corn', label: 'תירס', color: '#f5c842', emoji: '🌽' },
+  { id: 'nori', label: 'אצות נורי', color: '#2d4a2d' },
+  { id: 'wakame', label: 'אצות וואקמה', color: '#4a7c4a' },
+  { id: 'avocado', label: 'אבוקדו', color: '#5a8a3c' },
+  { id: 'sweet_potato', label: 'בטטה', color: '#e07b39' },
+  { id: 'carrot', label: 'גזר', color: '#e8651a' },
+  { id: 'alfalfa', label: 'נבטי אלפלפא', color: '#a0c878' },
+  { id: 'edamame', label: 'אדממה', color: '#6ab04c' },
+  { id: 'green_onion', label: 'בצל ירוק', color: '#5d9e4a' },
+  { id: 'peanuts', label: 'בוטנים קלויים', color: '#c4972a' },
+  { id: 'beet', label: 'סלק מבושל', color: '#9b2265' },
+  { id: 'ginger', label: 'ג׳ינג׳ר כבוש', color: '#f7c5a0' },
+  { id: 'corn', label: 'תירס', color: '#f5c842' },
 ]
 
 export const PROTEINS = [

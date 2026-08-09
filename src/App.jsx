@@ -19,7 +19,6 @@ const STEP_NAME = 0, STEP_BASE = 1, STEP_TOPPINGS = 2, STEP_PROTEIN = 3, STEP_SA
 const IDS_KEY = 'poke_order_ids'
 
 function getStoredIds() {
-  // Migrate old single-id key
   const old = localStorage.getItem('poke_order_id')
   if (old) {
     const existing = JSON.parse(localStorage.getItem(IDS_KEY) || '[]')
@@ -35,10 +34,10 @@ function saveIds(orders) {
 }
 
 function OrderFlow() {
-  const [appState, setAppState] = useState('loading') // loading | ordering | my_orders | auth_error
+  const [appState, setAppState] = useState('loading')
   const [step, setStep] = useState(STEP_NAME)
-  const [order, setOrder] = useState(EMPTY_ORDER)   // wizard state
-  const [editingId, setEditingId] = useState(null)  // null = new, string = editing existing
+  const [order, setOrder] = useState(EMPTY_ORDER)
+  const [editingId, setEditingId] = useState(null)
   const [myOrders, setMyOrders] = useState([])
 
   useEffect(() => {
@@ -199,9 +198,9 @@ function OrderFlow() {
 
   return (
     <div className={styles.app}>
-      <div className={styles.topBar}><span className={styles.logo}>פוקה וילה</span></div>
       <StepBar currentStep={step} />
-      <div className={styles.content}>
+      <span className={styles.brandMark}>פוקה וילה</span>
+      <div className={styles.stepWrap} key={step}>
         {step === STEP_NAME     && <NameStep     order={order} onNext={p => update(p)} onBack={myOrders.length > 0 ? backToList : null} />}
         {step === STEP_BASE     && <BaseStep     order={order} onNext={p => update(p)}              onBack={() => setStep(s => s - 1)} />}
         {step === STEP_TOPPINGS && <ToppingsStep order={order} onNext={(p, adv) => update(p, adv)} onBack={() => setStep(s => s - 1)} />}

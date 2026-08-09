@@ -1,23 +1,12 @@
 import styles from './StepBar.module.css'
 
-const STEPS = ['שם', 'בסיס', 'תוספות', 'חלבון', 'רוטב', 'סיכום']
+const TOTAL_STEPS = 6
 
 export default function StepBar({ currentStep }) {
+  const pct = (currentStep / (TOTAL_STEPS - 1)) * 100
   return (
-    <div className={styles.bar} role="progressbar" aria-valuenow={currentStep} aria-valuemax={STEPS.length - 1}>
-      {STEPS.map((label, i) => (
-        <div
-          key={i}
-          className={[
-            styles.step,
-            i < currentStep ? styles.done : '',
-            i === currentStep ? styles.active : '',
-          ].join(' ')}
-        >
-          <div className={styles.dot} />
-          <span className={styles.label}>{label}</span>
-        </div>
-      ))}
+    <div className={styles.track} role="progressbar" aria-valuenow={currentStep} aria-valuemax={TOTAL_STEPS - 1}>
+      <div className={styles.fill} style={{ width: `${pct}%` }} />
     </div>
   )
 }
