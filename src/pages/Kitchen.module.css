@@ -229,6 +229,18 @@
   line-height: 1.5;
 }
 
+.presetDetail {
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.presetName {
+  font-family: 'Frank Ruhl Libre', serif;
+  color: var(--color-primary);
+  font-size: 17px;
+  font-weight: 300;
+}
+
 .none {
   color: var(--color-text-dim);
   font-style: italic;

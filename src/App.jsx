@@ -1,7 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import StepBar from './components/StepBar.jsx'
 import NameStep from './pages/NameStep.jsx'
+import OrderModeStep from './pages/OrderModeStep.jsx'
+import PresetBowlsStep from './pages/PresetBowlsStep.jsx'
 import BaseStep from './pages/BaseStep.jsx'
 import ToppingsStep from './pages/ToppingsStep.jsx'
 import ProteinStep from './pages/ProteinStep.jsx'
@@ -13,8 +15,9 @@ import { supabase } from './lib/supabase.js'
 import { createOrder, getOrder, updateOrder, deleteOrder } from './lib/orders.js'
 import styles from './App.module.css'
 
-const EMPTY_ORDER = { name: '', base: null, toppings: [], proteins: [], sauces: [] }
-const STEP_NAME = 0, STEP_BASE = 1, STEP_TOPPINGS = 2, STEP_PROTEIN = 3, STEP_SAUCE = 4, STEP_REVIEW = 5
+const EMPTY_ORDER = { name: '', base: null, toppings: [], proteins: [], sauces: [], presetName: null }
+const STEP_NAME = 0, STEP_MODE = 1, STEP_PRESETS = 2, STEP_BASE = 3, STEP_TOPPINGS = 4, STEP_PROTEIN = 5, STEP_SAUCE = 6, STEP_REVIEW = 7
+const STEP_PROGRESS = [0, 18, 35, 35, 52, 68, 84, 100]
 
 const IDS_KEY = 'poke_order_ids'
 
@@ -39,6 +42,7 @@ function OrderFlow() {
   const [order, setOrder] = useState(EMPTY_ORDER)
   const [editingId, setEditingId] = useState(null)
   const [myOrders, setMyOrders] = useState([])
+  const [editingPresetIngredients, setEditingPresetIngredients] = useState(false)
 
   useEffect(() => {
     async function init() {
@@ -84,6 +88,7 @@ function OrderFlow() {
           toppings: order.toppings,
           protein: order.proteins,
           sauce: order.sauces,
+          preset_name: order.presetName,
         })
         setMyOrders(prev => {
           const next = prev.map(o => o.id === editingId ? saved : o)
@@ -97,6 +102,7 @@ function OrderFlow() {
           toppings: order.toppings,
           protein: order.proteins,
           sauce: order.sauces,
+          preset_name: order.presetName,
         })
         setMyOrders(prev => {
           const next = [...prev, saved]
@@ -107,6 +113,7 @@ function OrderFlow() {
       setEditingId(null)
       setOrder(EMPTY_ORDER)
       setStep(STEP_NAME)
+      setEditingPresetIngredients(false)
       setAppState('my_orders')
     } catch (err) {
       console.error('Failed to submit order:', err)
@@ -121,9 +128,11 @@ function OrderFlow() {
       toppings: o.toppings ?? [],
       proteins: Array.isArray(o.protein) ? o.protein : (o.protein ? [o.protein] : []),
       sauces:   Array.isArray(o.sauce)   ? o.sauce   : (o.sauce   ? [o.sauce]   : []),
+      presetName: o.preset_name ?? null,
     })
     setEditingId(o.id)
     setStep(STEP_NAME)
+    setEditingPresetIngredients(false)
     setAppState('ordering')
   }
 
@@ -131,6 +140,7 @@ function OrderFlow() {
     setOrder(EMPTY_ORDER)
     setEditingId(null)
     setStep(STEP_NAME)
+    setEditingPresetIngredients(false)
     setAppState('ordering')
   }
 
@@ -138,6 +148,7 @@ function OrderFlow() {
     setOrder(EMPTY_ORDER)
     setEditingId(null)
     setStep(STEP_NAME)
+    setEditingPresetIngredients(false)
     setAppState('my_orders')
   }
 
@@ -155,8 +166,30 @@ function OrderFlow() {
     })
   }
 
-  function onOrderUpdate(updated) {
+  const onOrderUpdate = useCallback(function onOrderUpdate(updated) {
     setMyOrders(prev => prev.map(o => o.id === updated.id ? updated : o))
+  }, [])
+
+  function chooseCustom() {
+    setOrder(prev => ({ ...prev, base: null, toppings: [], proteins: [], sauces: [], presetName: null }))
+    setEditingPresetIngredients(false)
+    setStep(STEP_BASE)
+  }
+
+  function choosePreset({ name: presetName, ...recipe }) {
+    setOrder(prev => ({ ...prev, ...recipe, presetName }))
+    setEditingPresetIngredients(false)
+    setStep(STEP_REVIEW)
+  }
+
+  function editPresetIngredients() {
+    setEditingPresetIngredients(true)
+    setStep(STEP_BASE)
+  }
+
+  function reviewBack() {
+    if (!order.presetName) return setStep(STEP_SAUCE)
+    setStep(editingPresetIngredients ? STEP_SAUCE : STEP_PRESETS)
   }
 
   if (appState === 'loading') {
@@ -198,15 +231,17 @@ function OrderFlow() {
 
   return (
     <div className={styles.app}>
-      <StepBar currentStep={step} />
+      <StepBar progress={STEP_PROGRESS[step]} />
       <span className={styles.brandMark}>פוקה וילה</span>
       <div className={styles.stepWrap} key={step}>
         {step === STEP_NAME     && <NameStep     order={order} onNext={p => update(p)} onBack={myOrders.length > 0 ? backToList : null} />}
-        {step === STEP_BASE     && <BaseStep     order={order} onNext={p => update(p)}              onBack={() => setStep(s => s - 1)} />}
+        {step === STEP_MODE     && <OrderModeStep onHouseBowls={() => setStep(STEP_PRESETS)} onCustom={chooseCustom} onBack={() => setStep(STEP_NAME)} />}
+        {step === STEP_PRESETS  && <PresetBowlsStep onSelect={choosePreset} onBack={() => setStep(STEP_MODE)} />}
+        {step === STEP_BASE     && <BaseStep     order={order} onNext={p => update(p)}              onBack={() => setStep(order.presetName ? STEP_PRESETS : STEP_MODE)} />}
         {step === STEP_TOPPINGS && <ToppingsStep order={order} onNext={(p, adv) => update(p, adv)} onBack={() => setStep(s => s - 1)} />}
         {step === STEP_PROTEIN  && <ProteinStep  order={order} onNext={(p, adv) => update(p, adv)} onBack={() => setStep(s => s - 1)} />}
         {step === STEP_SAUCE    && <SauceStep    order={order} onNext={(p, adv) => update(p, adv)} onBack={() => setStep(s => s - 1)} />}
-        {step === STEP_REVIEW   && <ReviewStep   order={order} onSubmit={submit}                    onBack={() => setStep(s => s - 1)} />}
+        {step === STEP_REVIEW   && <ReviewStep   order={order} onSubmit={submit} onBack={reviewBack} onEditIngredients={order.presetName ? editPresetIngredients : null} />}
       </div>
     </div>
   )

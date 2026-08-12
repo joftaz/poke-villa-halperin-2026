@@ -1,5 +1,6 @@
 const SHEET_ID = '1dvZtAaRk08UMJ0pOeOHC7Z0BFa_KYgf-5vgrWeMjXyk'
-const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv`
+const SHEET_GID = '65408799'
+const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${SHEET_GID}`
 
 function hexToRgba(hex, alpha) {
   if (!hex || hex === 'transparent') return 'rgba(0,0,0,0)'
@@ -9,12 +10,16 @@ function hexToRgba(hex, alpha) {
   return `rgba(${r},${g},${b},${alpha})`
 }
 
-function parseLine(line) {
+export function parseLine(line) {
   const result = []
   let current = ''
   let inQuotes = false
-  for (const ch of line) {
-    if (ch === '"') inQuotes = !inQuotes
+  for (let i = 0; i < line.length; i += 1) {
+    const ch = line[i]
+    if (ch === '"' && inQuotes && line[i + 1] === '"') {
+      current += '"'
+      i += 1
+    } else if (ch === '"') inQuotes = !inQuotes
     else if (ch === ',' && !inQuotes) { result.push(current); current = '' }
     else current += ch
   }
@@ -22,26 +27,69 @@ function parseLine(line) {
   return result
 }
 
+function isChecked(value) {
+  return ['TRUE', '1', 'YES'].includes(String(value ?? '').trim().toUpperCase())
+}
+
+function menuItem(row, category) {
+  const item = { id: row.id, label: row.label, color: row.color }
+  if (category === 'topping') item.emoji = row.emoji
+  if (category === 'sauce') item.tint = hexToRgba(row.color, 0.18)
+  return item
+}
+
+export function parseMenuCsv(text, warn = console.warn) {
+  const normalized = text.trim().replace(/\r/g, '')
+  if (!normalized) throw new Error('Menu sheet is empty')
+
+  const [headerLine, ...dataLines] = normalized.split('\n')
+  const headers = parseLine(headerLine).map(h => h.trim())
+  const activeColumn = headers.indexOf('active')
+  if (activeColumn === -1) throw new Error('Menu sheet is missing the active column')
+
+  const presetNames = headers.slice(activeColumn + 1).filter(Boolean)
+
+  const rows = dataLines
+    .map(line => {
+      const values = parseLine(line)
+      return Object.fromEntries(headers.map((header, i) => [header, (values[i] ?? '').trim()]))
+    })
+    .filter(row => row.category && row.id)
+
+  const activeRows = rows.filter(row => row.active?.toUpperCase() !== 'FALSE')
+  const byCategory = category => activeRows
+    .filter(row => row.category === category)
+    .map(row => menuItem(row, category))
+
+  const presets = presetNames.flatMap(name => {
+    const selected = activeRows.filter(row => isChecked(row[name]))
+    const bases = selected.filter(row => row.category === 'base').map(row => row.id)
+
+    if (bases.length !== 1) {
+      warn(`Ignoring invalid House Bowl "${name}": expected exactly one active base, found ${bases.length}`)
+      return []
+    }
+
+    return [{
+      name,
+      base: bases[0],
+      toppings: selected.filter(row => row.category === 'topping').map(row => row.id),
+      proteins: selected.filter(row => row.category === 'protein').map(row => row.id),
+      sauces: selected.filter(row => row.category === 'sauce').map(row => row.id),
+    }]
+  })
+
+  return {
+    bases: byCategory('base'),
+    toppings: byCategory('topping'),
+    proteins: byCategory('protein'),
+    sauces: byCategory('sauce'),
+    presets,
+  }
+}
+
 export async function fetchMenu() {
   const resp = await fetch(CSV_URL)
   if (!resp.ok) throw new Error(`Failed to fetch menu: ${resp.status}`)
-  const text = await resp.text()
-
-  const [headerLine, ...dataLines] = text.trim().split('\n')
-  const headers = parseLine(headerLine).map(h => h.trim())
-
-  const rows = dataLines
-    .map(line => Object.fromEntries(headers.map((h, i) => [h, (parseLine(line)[i] ?? '').trim()])))
-    .filter(r => r.active?.toUpperCase() !== 'FALSE')
-
-  return {
-    bases:    rows.filter(r => r.category === 'base')
-                  .map(r => ({ id: r.id, label: r.label, color: r.color })),
-    toppings: rows.filter(r => r.category === 'topping')
-                  .map(r => ({ id: r.id, label: r.label, color: r.color, emoji: r.emoji })),
-    proteins: rows.filter(r => r.category === 'protein')
-                  .map(r => ({ id: r.id, label: r.label, color: r.color })),
-    sauces:   rows.filter(r => r.category === 'sauce')
-                  .map(r => ({ id: r.id, label: r.label, color: r.color, tint: hexToRgba(r.color, 0.18) })),
-  }
+  return parseMenuCsv(await resp.text())
 }

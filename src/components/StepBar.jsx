@@ -1,11 +1,9 @@
 import styles from './StepBar.module.css'
 
-const TOTAL_STEPS = 6
-
-export default function StepBar({ currentStep }) {
-  const pct = (currentStep / (TOTAL_STEPS - 1)) * 100
+export default function StepBar({ progress }) {
+  const pct = Math.max(0, Math.min(100, progress))
   return (
-    <div className={styles.track} role="progressbar" aria-valuenow={currentStep} aria-valuemax={TOTAL_STEPS - 1}>
+    <div className={styles.track} role="progressbar" aria-valuenow={pct} aria-valuemin="0" aria-valuemax="100">
       <div className={styles.fill} style={{ width: `${pct}%` }} />
     </div>
   )

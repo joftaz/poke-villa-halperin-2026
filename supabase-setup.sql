@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS public.orders (
   toppings    TEXT[]      DEFAULT '{}' NOT NULL,
   protein     TEXT[]      DEFAULT '{}' NOT NULL,
   sauce       TEXT[]      DEFAULT '{}' NOT NULL,
+  preset_name TEXT,
   status      TEXT        DEFAULT 'received' NOT NULL
                           CHECK (status IN ('received', 'preparing', 'ready')),
   created_at  TIMESTAMPTZ DEFAULT now() NOT NULL,

@@ -52,6 +52,12 @@ function OrderCard({ order, onAdvance, onDelete }) {
       </div>
 
       <div className={styles.orderDetails}>
+        {order.preset_name && (
+          <div className={[styles.detailRow, styles.presetDetail].join(' ')}>
+            <span className={styles.detailLabel}>קערה</span>
+            <span className={styles.presetName}>{order.preset_name}</span>
+          </div>
+        )}
         <div className={styles.detailRow}>
           <span className={styles.detailLabel}>בסיס</span>
           <span className={styles.detailValue}>{base?.label ?? '—'}</span>
@@ -116,7 +122,7 @@ export default function Kitchen() {
     try {
       const data = await getAllOrders()
       setOrders(data)
-    } catch (e) {
+    } catch {
       setError('שגיאה בטעינת הזמנות')
     }
   }, [])
@@ -141,7 +147,7 @@ export default function Kitchen() {
     try {
       await updateOrderStatus(id, nextStatus)
       setOrders(prev => prev.map(o => o.id === id ? { ...o, status: nextStatus } : o))
-    } catch (e) {
+    } catch {
       setError('שגיאה בעדכון סטטוס')
     }
   }
@@ -150,7 +156,7 @@ export default function Kitchen() {
     try {
       await deleteOrder(id)
       setOrders(prev => prev.filter(o => o.id !== id))
-    } catch (e) {
+    } catch {
       setError('שגיאה במחיקת הזמנה')
     }
   }

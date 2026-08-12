@@ -95,6 +95,17 @@
   line-height: 1.6;
 }
 
+.presetRow {
+  background: var(--color-primary-light);
+}
+
+.presetName {
+  font-family: 'Frank Ruhl Libre', serif;
+  color: var(--color-primary);
+  font-size: 18px;
+  font-weight: 300;
+}
+
 .editBtn {
   width: 100%;
   max-width: 480px;

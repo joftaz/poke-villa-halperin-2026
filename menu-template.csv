@@ -1,24 +1,24 @@
-category,id,label,color,emoji,active
-base,rice,אורז,#f5e6c8,,true
-base,noodles,אטריות,#e8d5a3,,true
-base,mixed,משולב,#edd9a3,,true
-topping,nori,אצות נורי,#2d4a2d,🌿,true
-topping,wakame,אצות וואקמה,#4a7c4a,🍃,true
-topping,avocado,אבוקדו,#5a8a3c,🥑,true
-topping,sweet_potato,בטטה,#e07b39,🍠,true
-topping,carrot,גזר,#e8651a,🥕,true
-topping,alfalfa,נבטי אלפלפא,#a0c878,🌱,true
-topping,edamame,אדממה,#6ab04c,🫘,true
-topping,green_onion,בצל ירוק,#5d9e4a,🧅,true
-topping,peanuts,בוטנים קלויים,#c4972a,🥜,true
-topping,beet,סלק מבושל,#9b2265,🫧,true
-topping,ginger,ג'ינג'ר כבוש,#f7c5a0,🫚,true
-topping,corn,תירס,#f5c842,🌽,true
-protein,strip,רצועה,#c4842a,,true
-protein,egg_strip,רצועת ביצים,#f5d76e,,true
-protein,tofu,טופו,#f0e6c8,,true
-protein,none,כלום,transparent,,true
-sauce,sriracha,סרירצ'ה,#e63030,,true
-sauce,soy,סויה,#4a2800,,true
-sauce,teriyaki,טריאקי,#8b4513,,true
-sauce,spicy_mayo,מיונז חריף,#f0a500,,true
+category,id,label,color,emoji,active,הירוקה של הווילה,קראנץ׳ בטטה,האדומה החריפה
+base,rice,אורז,#f5e6c8,,true,true,false,false
+base,noodles,אטריות,#e8d5a3,,true,false,false,true
+base,mixed,משולב,#edd9a3,,true,false,true,false
+topping,nori,אצות נורי,#2d4a2d,🌿,true,false,false,true
+topping,wakame,אצות וואקמה,#4a7c4a,🍃,true,true,false,false
+topping,avocado,אבוקדו,#5a8a3c,🥑,true,true,false,true
+topping,sweet_potato,בטטה,#e07b39,🍠,true,false,true,false
+topping,carrot,גזר,#e8651a,🥕,true,false,true,false
+topping,alfalfa,נבטי אלפלפא,#a0c878,🌱,true,true,false,false
+topping,edamame,אדממה,#6ab04c,🫘,true,true,false,true
+topping,green_onion,בצל ירוק,#5d9e4a,🧅,true,true,true,false
+topping,peanuts,בוטנים קלויים,#c4972a,🥜,true,false,true,false
+topping,beet,סלק מבושל,#9b2265,🫧,true,false,false,true
+topping,ginger,ג'ינג'ר כבוש,#f7c5a0,🫚,true,false,false,true
+topping,corn,תירס,#f5c842,🌽,true,false,true,false
+,,,,,,,,
+protein,egg_strip,רצועת ביצים,#f5d76e,,true,false,true,false
+protein,tofu,טופו,#f0e6c8,,true,true,false,true
+sauce,wasabi,ואסאבי,#AFD77F,,true,false,false,false
+sauce,sriracha,סרירצ'ה,#e63030,,true,false,false,true
+sauce,soy,סויה,#4a2800,,true,true,false,false
+sauce,teriyaki,טריאקי,#8b4513,,true,false,true,false
+sauce,spicy_mayo,מיונז חריף,#f0a500,,true,false,true,true
