@@ -12,8 +12,6 @@ function ToppingBlob({ topping, pos, index }) {
   const size = 9 + (index % 3) * 2
   return (
     <circle
-      className={styles.toppingBlob}
-      style={{ '--delay': `${index * 60}ms` }}
       cx={pos.cx}
       cy={pos.cy}
       r={size}
@@ -45,13 +43,12 @@ export default function BowlIllustration({ order }) {
         <ellipse cx="50" cy="94" rx="38" ry="6" fill="rgba(0,0,0,0.10)" />
         <ellipse cx="50" cy="52" rx="42" ry="44" fill="#e8ddd0" />
         <ellipse cx="50" cy="50" rx="39" ry="41" fill="#f2ece4" />
-        <ellipse cx="50" cy="50" rx="34" ry="36" fill={baseColor} className={styles.baseLayer} />
+        <ellipse cx="50" cy="50" rx="34" ry="36" fill={baseColor} />
 
         {selectedSauces.length > 0 && (
           <ellipse
             cx="50" cy="50" rx="34" ry="36"
             fill={sauceTint}
-            className={styles.sauceLayer}
           />
         )}
 
@@ -65,7 +62,7 @@ export default function BowlIllustration({ order }) {
         ))}
 
         {selectedProteins.length > 0 && (
-          <g className={styles.proteinLayer}>
+          <g>
             <rect x="28" y="44" width="44" height="12" rx="6" fill={proteinColor} opacity="0.95" />
             <rect x="32" y="47" width="36" height="6" rx="3" fill="rgba(255,255,255,0.25)" />
           </g>
