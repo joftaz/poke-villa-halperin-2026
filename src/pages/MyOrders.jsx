@@ -11,13 +11,16 @@ const STATUS_COLORS = {
 }
 
 function OrderCard({ order: initialOrder, onEdit, onCancel, onOrderUpdate }) {
-  const { bases, proteins, sauces } = useMenu()
+  const { bases, toppings, proteins, sauces } = useMenu()
   const [order, setOrder] = useState(initialOrder)
   const status = order.status ?? 'received'
   const colors = STATUS_COLORS[status] ?? STATUS_COLORS.received
   const base = bases.find(b => b.id === order.base)
-  const protein = proteins.find(p => p.id === order.protein)
-  const sauce = sauces.find(s => s.id === order.sauce)
+  const proteinIds = Array.isArray(order.protein) ? order.protein : (order.protein ? [order.protein] : [])
+  const sauceIds = Array.isArray(order.sauce) ? order.sauce : (order.sauce ? [order.sauce] : [])
+  const selectedToppings = toppings.filter(t => (order.toppings ?? []).includes(t.id))
+  const selectedProteins = proteins.filter(p => proteinIds.includes(p.id) && p.id !== 'none')
+  const selectedSauces = sauces.filter(s => sauceIds.includes(s.id))
 
   useEffect(() => {
     const channel = supabase
@@ -33,7 +36,7 @@ function OrderCard({ order: initialOrder, onEdit, onCancel, onOrderUpdate }) {
       })
       .subscribe()
     return () => supabase.removeChannel(channel)
-  }, [order.id])
+  }, [order.id, onOrderUpdate])
 
   return (
     <div className={styles.card}>
@@ -48,9 +51,8 @@ function OrderCard({ order: initialOrder, onEdit, onCancel, onOrderUpdate }) {
       </div>
 
       <div className={styles.summary}>
-        {base?.label}
-        {protein && protein.id !== 'none' && ` · ${protein.label}`}
-        {sauce && ` · ${sauce.label}`}
+        {order.preset_name && <span className={styles.presetName}>{order.preset_name}<br /></span>}
+        {[base?.label, ...selectedToppings.map(t => t.label), ...selectedProteins.map(p => p.label), ...selectedSauces.map(s => s.label)].filter(Boolean).join(' · ')}
       </div>
 
       {status === 'received' && (

@@ -70,6 +70,12 @@
   line-height: 1.6;
 }
 
+.presetName {
+  font-family: 'Frank Ruhl Libre', serif;
+  color: var(--color-primary);
+  font-size: 16px;
+}
+
 .actions {
   display: flex;
   gap: 8px;

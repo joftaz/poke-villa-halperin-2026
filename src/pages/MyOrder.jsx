@@ -58,6 +58,12 @@ export default function MyOrder({ order: initialOrder, savedId, onEdit, onCancel
       <BowlIllustration order={order} />
 
       <div className={styles.card}>
+        {order.preset_name && (
+          <div className={[styles.row, styles.presetRow].join(' ')}>
+            <span className={styles.label}>קערה</span>
+            <span className={styles.presetName}>{order.preset_name}</span>
+          </div>
+        )}
         <div className={styles.row}>
           <span className={styles.label}>בסיס</span>
           <span className={styles.value}>{base?.label ?? '—'}</span>

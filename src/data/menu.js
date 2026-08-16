@@ -20,13 +20,12 @@ export const TOPPINGS = [
 ]
 
 export const PROTEINS = [
-  { id: 'strip', label: 'רצועה', color: '#c4842a' },
   { id: 'egg_strip', label: 'רצועת ביצים', color: '#f5d76e' },
   { id: 'tofu', label: 'טופו', color: '#f0e6c8' },
-  { id: 'none', label: 'כלום', color: 'transparent' },
 ]
 
 export const SAUCES = [
+  { id: 'wasabi', label: 'ואסאבי', color: '#AFD77F', tint: 'rgba(175,215,127,0.18)' },
   { id: 'sriracha', label: 'סרירצ׳ה', color: '#e63030', tint: 'rgba(230,48,48,0.18)' },
   { id: 'soy', label: 'סויה', color: '#4a2800', tint: 'rgba(74,40,0,0.18)' },
   { id: 'teriyaki', label: 'טריאקי', color: '#8B4513', tint: 'rgba(139,69,19,0.18)' },

@@ -6,22 +6,21 @@ A Hebrew-language poke bowl ordering web app with a real-time kitchen display. C
 
 ## What it does
 
-**Customer flow** — a 6-step wizard at the root URL (`/`):
+**Customer flow** — an adaptive wizard at the root URL (`/`):
 
 | Step | What the customer picks |
 |------|------------------------|
 | 1. Name | Their name |
-| 2. Base | Rice / Noodles / Mixed |
-| 3. Toppings | Up to 12 options (nori, avocado, edamame, etc.) |
-| 4. Protein | Strip / Egg strip / Tofu / None |
-| 5. Sauce | Sriracha / Soy / Teriyaki / Spicy mayo |
-| 6. Review | Preview bowl illustration + confirm & submit |
+| 2. Order mode | House Bowls (`קערות הבית`) or custom build |
+| 3a. House Bowls | Pick a Sheet-driven recipe, review it, and optionally edit its ingredients |
+| 3b. Custom build | Pick base, toppings, proteins, and sauces |
+| 4. Review | See the final ingredient list and confirm |
 
 After submission the customer sees **My Order** — a live status card (received → preparing → ready) that updates in real time without refreshing the page. The order ID is saved in `localStorage` so the same device reconnects to the same order on revisit.
 
 **Kitchen display** — `/kitchen`
 
-- PIN-protected (code `1234`) + Supabase email/password auth for the kitchen account.
+- PIN-protected + Supabase email/password auth for the kitchen account. Do not document access codes in the repository.
 - Shows all orders as cards grouped by status (received / preparing / ready).
 - One-click buttons advance each order through the workflow.
 - Live updates via Supabase Realtime so the display refreshes automatically when any order changes.
@@ -49,16 +48,21 @@ After submission the customer sees **My Order** — a live status card (received
 src/
 ├── App.jsx                  # Root router — OrderFlow vs. Kitchen
 ├── data/
-│   └── menu.js              # All menu options (BASES, TOPPINGS, PROTEINS, SAUCES, STATUSES)
+│   ├── menu.js              # Offline ingredient fallback + statuses
+│   └── presetImages.js      # Exact-name image mapping for known House Bowls
 ├── lib/
 │   ├── supabase.js          # Supabase client (reads env vars)
-│   ├── orders.js            # CRUD helpers: createOrder, getOrder, updateOrderStatus, getAllOrders
+│   ├── fetchMenu.js         # Public Sheet CSV parser, including House Bowl columns
+│   ├── MenuContext.jsx      # Runtime Sheet menu with local ingredient fallback
+│   ├── orders.js            # Supabase CRUD helpers
 │   └── localOrders.js       # (legacy local-storage fallback, no longer used in main flow)
 ├── components/
 │   ├── BowlIllustration.jsx # Animated SVG bowl that renders as the customer builds their order
-│   └── StepBar.jsx          # Progress indicator across the 6 wizard steps
+│   └── StepBar.jsx          # Route-aware wizard progress indicator
 └── pages/
     ├── NameStep.jsx
+    ├── OrderModeStep.jsx
+    ├── PresetBowlsStep.jsx
     ├── BaseStep.jsx
     ├── ToppingsStep.jsx
     ├── ProteinStep.jsx
@@ -83,8 +87,9 @@ The app expects an `orders` table with these columns:
 | `name` | text | customer name |
 | `base` | text | base id from menu |
 | `toppings` | text[] | array of topping ids |
-| `protein` | text | protein id |
-| `sauce` | text | sauce id |
+| `protein` | text[] | final protein ids |
+| `sauce` | text[] | final sauce ids |
+| `preset_name` | text nullable | House Bowl name snapshot; null for custom orders |
 | `status` | text | `received` / `preparing` / `ready` |
 
 Row-level security should allow:
@@ -92,6 +97,16 @@ Row-level security should allow:
 - The kitchen service account to read and update all rows.
 
 Realtime must be enabled on the `orders` table.
+
+Apply the ordered SQL files under `supabase/migrations` to an existing project. `supabase-setup.sql` describes a clean installation.
+
+---
+
+## Dynamic menu and House Bowls
+
+The app loads the public `menu-template` Google Sheet once on each page refresh. The first six columns are fixed (`category,id,label,color,emoji,active`). Every non-empty column after `active` defines a House Bowl: the header is its name and checked rows are its ingredients. A valid bowl has exactly one active base.
+
+See `docs/preset-bowls.md` for the complete operating contract and `docs/bowl-image-prompts.md` for the committed image prompts.
 
 ---
 
@@ -112,6 +127,9 @@ VITE_KITCHEN_PASSWORD=<kitchen account password>
 
 ```bash
 npm install
+npm test
+npm run lint
+npm run build
 npm run dev
 ```
 
@@ -122,11 +140,10 @@ npm run dev
 
 ## Deployment
 
-The project is linked to Vercel (`prj_NmIxdG77aFYrPPw4maiS7fWG1VfJ`). Set the four env vars above in the Vercel project settings, then:
+The project is linked to Vercel (`prj_NmIxdG77aFYrPPw4maiS7fWG1VfJ`). Pull requests automatically receive preview deployments through the Git integration. Set the four env vars above in the Vercel project settings for production and preview environments.
 
 ```bash
 npm run build
-vercel --prod
 ```
 
 ---
